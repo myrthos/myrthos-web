@@ -1,0 +1,70 @@
+# cSpell: ignore Myrthos frontmatter lastmod
+
+# Main settings
+baseURL = 'https://myrthos.net'
+title = "Myrthos Web"
+author = "Myrthos"
+copyright = "Copyright © 2023-2026 Myrthos."
+
+timeZone = 'Europe/Amsterdam'
+locale = 'en-US'
+
+# The theme that is used
+theme = "hugo-minimal-black"
+
+# Additional settings
+disableHugoGeneratorInject = true
+enableRobotsTXT = true
+#enableGitInfo = true
+enableEmoji = true
+#sectionPagesMenu = "main"
+
+[frontmatter]
+  date = ["date", "publishDate", "lastmod"]
+  lastmod = ["lastmod", ":fileModTime", ":default"]
+
+[outputs]
+  home = ["HTML", "RSS", "JSON", "WebAppManifest"]
+
+[outputFormats.WebAppManifest]
+  mediaType = "application/manifest+json"
+  rel = "manifest"
+  baseName = "manifest"
+  isPlainText = true
+  notAlternative = true
+
+[build]
+  writeStats = true
+  
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+
+[privacy]
+  [privacy.youtube]
+    privacyEnhanced = true
+
+[module]
+  [module.hugoVersion]
+    extended = true
+    min = "0.110.-"
+    max = ""
+  [[module.mounts]]
+    source = "archetypes"
+    target = "archetypes"
+  [[module.mounts]]
+    source = "assets"
+    target = "assets"
+  [[module.mounts]]
+    source = "i18n"
+    target = "i18n"
+  [[module.mounts]]
+    source = "layouts"
+    target = "layouts"
+  [[module.mounts]]
+    source = "static"
+    target = "static"
+  [[module.mounts]]
+    source = "netlify.toml"
+    target = "assets/config/netlify.toml"
+

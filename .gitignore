@@ -1,0 +1,26 @@
+# Hugo
+public/
+themes/
+.hugo_build.lock
+hugo_stats.json
+
+# Node.js
+node_modules/
+npm-debug.log*
+package-lock.json
+
+# Editor
+.vscode/
+
+# Build artifacts
+*.log
+*.tmp
+*.temp
+
+# Backup files
+*.backup
+*.bak
+
+# OS files
+Thumbs.db
+Desktop.ini

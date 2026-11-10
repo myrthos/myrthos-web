@@ -1,0 +1,128 @@
+# Site Params
+# cSpell: Ignore Myrthos Devicon goatcounter webp umami
+
+brand = "Myrthos"
+description = "Myrthos is a site creating blogs and projects about electronics, software development, retro computing and photography."
+
+# Site logo
+[logo]
+  logo_dark = "images/Logo_Rotated_Text50-dark.webp"
+  logo_light = "images/Logo_Rotated_Text50-light.webp"
+  logo_brand = false  # if true, show brand name next to logo
+
+[copyright]
+  first_year = "2023"
+  owner = "Myrthos"
+
+[license]
+  type = "Licensed under Creative Commons"
+  link = "https://creativecommons.org/licenses/by-nc-sa/4.0/"
+  title = "CC BY-NC-SA 4.0"
+
+# Dock at bottom right of page
+[dock]
+  enable = false
+
+[search]
+  header = true     # show search in header
+  name = "Search"
+  icon = "fa-solid fa-magnifying-glass"
+
+# Project and blog intro text
+projectsIntro = "Selected projects to display list." # Can be empty
+blogIntro = "" # Can be empty
+
+# Favicon - Place your favicon files in /static/ directory
+# Supported formats: .ico, .png, .svg
+favicon = "icons/favicon-96x96.png"
+appleTouchIcon = "apple-touch-icon.png"
+
+# Web App Manifest Configuration (PWA support)
+[manifest]
+  themeColor = "#a855f7"
+  backgroundColor = "#000000"
+  categories = ["blog", "portfolio", "developer"]
+
+  # Custom icon configuration (optional)
+  # If not specified, defaults to /icons/android-chrome-*.png
+  # [[manifest.icons]]
+  #   src = "/icons/android-chrome-192x192.png"
+  #   sizes = "192x192"
+  #   type = "image/png"
+  #   purpose = "any maskable"
+
+# Theme configuration
+defaultTheme = "light"  # Options: "light", "dark", "system"
+
+# Icon Libraries
+[icons]
+  useFontAwesome = true
+  useDevicon = true
+
+[home]
+  sections = ["hero", "now", "projects", "posts"]
+  showNowSection = true
+  showFeaturedProjects = true
+  showLatestPosts = true
+  featuredProjectsLimit = 3
+  latestPostsLimit = 3
+  projectsTitle = "Selected Work"
+  projectsSubtitle = ""
+  blogTitle = "Latest Writing"
+  blogSubtitle = ""
+  techMarqueeLabel = "Experienced In"
+
+# Hero Section Configuration
+[hero]
+  badge = "Software Engineer"
+  title = "Hi, I'm Your Name or your interesting title."
+  role = "Subtitle for title with role perspective"
+  summary = "You can write your summary to be displayed here."
+  # avatar = "images/avatar.jpg"  # Optional: 400x400px recommended
+  location = "City, Country"
+  focus = "Currently focused on Hugo themes & developer experience."
+  available = true
+  availableLabel = "Available for work"
+
+  nowLabel = "Quick Facts"
+  nowIntro = "Right now I'm mainly:"
+  now = [
+    "Building minimal Hugo themes",
+    "Exploring dark-mode design patterns",
+    "Writing about web performance"
+  ]
+
+  [params.hero.primary]
+    label = "View Projects"
+    href = "/projects/"
+
+  [params.hero.secondary]
+    label = "Read the Blog"
+    href = "/blog/"
+
+# Analytics Configuration
+[analytics]
+  # Google Analytics (GA4)
+  # googleAnalytics = "G-XXXXXXXXXX"
+
+  [analytics.goatcounter]
+    name = "myrthos"
+    enabled = true
+
+  # Plausible Analytics (privacy-friendly)
+  # [analytics.plausible]
+  #   enabled = true
+  #   domain = "myrthos.net"
+  #   scriptUrl = "https://plausible.io/js/script.js"
+
+  # Umami Analytics (self-hosted option)
+  # [analytics.umami]
+  #   enabled = true
+  #   scriptUrl = "https://analytics.myrthos.net/script.js"
+  #   websiteId = "your-website-id"
+
+  # Fathom Analytics (privacy-friendly)
+  # [analytics.fathom]
+  #   enabled = true
+  #   scriptUrl = "https://cdn.usefathom.com/script.js"
+  #   siteId = "YOUR-SITE-ID"

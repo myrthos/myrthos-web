@@ -1,0 +1,97 @@
+[[main]]
+  name = "Blog"
+  pageRef = "blog"
+  url = "/blog/"
+  weight = 10
+  identifier = "blog"
+  [main.params]
+    icon = "fa-regular fa-note-sticky"
+
+[[main]]
+  name = "Projects"
+  pageRef = "projects"
+  url = "/projects/"
+  weight = 20
+  identifier = "projects"
+  [main.params]
+    icon = "fa-solid fa-microchip"
+
+[[main]]
+  name = "Documentation"
+  pageRef = "docs"
+  url = "/docs/"
+  weight = 30
+  identifier = "docs"
+  [main.params]
+    icon = "fa-regular fa-file-lines"
+
+[[main]]
+  name = "Gallery"
+  pageRef = "gallery"
+  url = "/gallery/"
+  weight = 40
+  identifier = "gallery"
+  [main.params]
+    icon = "fa-regular fa-images"
+
+[[social]]
+  name = "GitHub"
+  url = "https://github.com/myrthos"
+  weight = 10
+  [social.params]
+    icon = "fa-brands fa-github"
+
+[[social]]
+  name = "Mastodon"
+  url = "https://techhub.social/@Myrthos"
+  weight = 10
+  [social.params]
+    icon = "fa-brands fa-mastodon"
+
+[[footer]]
+  name = "About"
+  pageRef = "about"
+  url = "/about/"
+  weight = 5
+  [footer.params]
+    icon = "fa-solid fa-address-card"
+
+[[footer]]
+  name = "Contact"
+  pageRef = "contact"
+  url = "/contact/"
+  weight = 10
+  [footer.params]
+    icon = "fa-solid fa-envelope"
+
+[[footer]]
+  name = "Terms of use"
+  pageRef = "terms"
+  url = "/terms/"
+  weight = 30
+  [footer.params]
+    icon = "fa-solid fa-building"
+
+[[footer]]
+  name = "Privacy Policy"
+  pageRef = "privacy"
+  url = "/privacy/"
+  weight = 40
+  [footer.params]
+    icon = "fa-solid fa-user-shield"
+
+[[footer]]
+  name = "Credits"
+  pageRef = "credits"
+  url = "/credits/"
+  weight = 50
+  [footer.params]
+    icon = "fa-regular fa-file-lines"
+
+[[footer]]
+  name = "Tags"
+  pageRef = "tags"
+  url = "/tags/"
+  weight = 60
+  [footer.params]
+    icon = "fa-solid fa-tags"

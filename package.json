@@ -1,0 +1,64 @@
+{
+  "name": "myrthos-web",
+  "version": "0.1.0",
+  "description": "Myrthos-web is a personal blog and documentation site",
+  "keywords": [
+    "hugo",
+    "myrthos",
+    "tailwind",
+    "responsive",
+    "blog",
+    "documentation",
+    "projects",
+    "photography"
+  ],
+  "author": "Myrthos",
+  "license": "MIT",
+  "homepage": "https://myrthos.net",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/myrthos/myrthos-web.git"
+  },
+  "bugs": {
+    "url": "https://github.com/myrthos/myrthos-web/issues"
+  },
+  "main": "index.js",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "start": "hugo server --bind=0.0.0.0 --disableFastRender --printI18nWarnings --printMemoryUsage",
+    "start:draft": "hugo server --bind=0.0.0.0 --disableFastRender --printI18nWarnings --printMemoryUsage -D",
+    "start:future": "hugo server --bind=0.0.0.0 --disableFastRender --printI18nWarnings --printMemoryUsage -F",
+    "start:all": "hugo server --bind=0.0.0.0 --disableFastRender --printI18nWarnings --printMemoryUsage -D -E -F",
+    "start:example": "hugo server --bind=0.0.0.0 --disableFastRender --printI18nWarnings -s themes/hugo-minimal-black/exampleSite",
+    "debug": "hugo server --bind=0.0.0.0 --disableFastRender --printI18nWarnings -printMemoryUsage --templateMetrics --templateMetricsHints --logLevel debug",
+    "build": "hugo --gc --minify",
+    "clean": "rimraf public",
+    "lint": "npm-run-all2 lint:**",
+    "lint:scripts": "eslint assets/js --no-error-on-unmatched-pattern",
+    "lint:styles": "stylelint \"assets/sass/**/*.{css,sass,scss,sss,less}\" --allow-empty-input",
+    "lint:markdown": "markdownlint-cli2 \"*.md\" \"content/**/*.md\"",
+    "mod:clean": "hugo mod clean",
+    "mod:update": "rimraf _vendor && hugo mod get -u ./... && hugo mod get -u && npm run -s mod:vendor && npm run -s mod:tidy",
+    "mod:tidy": "hugo mod tidy && hugo mod tidy",
+    "mod:vendor": "rimraf _vendor && hugo mod vendor",
+    "node:clean": "rimraf package-lock.json node_modules",
+    "node:reinstall": "npm run -s node:clean && npm install",
+    "node:upgrade": "npx npm-check-updates -u && npm run -s mod:update",
+    "version": "hugo env && npm version"
+  },
+  "type": "commonjs",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.14.0",
+    "globals": "^17.14.0",
+    "markdownlint": "^0.42.1",
+    "markdownlint-cli2": "^0.24.0",
+    "npm-run-all2": "^9.0.4",
+    "rimraf": "^6.1.4",
+    "stylelint": "^18.0.0",
+    "stylelint-config-standard": "^41.0.0"
+  }
+}

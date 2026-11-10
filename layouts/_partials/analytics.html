@@ -1,0 +1,57 @@
+{{- if not hugo.IsServer -}}
+
+  <!-- Google Analytics (GA4) -->
+  {{ with .Site.Params.analytics.googleAnalytics }}
+    {{ if . }}
+      <script async src="https://www.googletagmanager.com/gtag/js?id={{ . }}"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{ . }}');
+      </script>
+    {{ end }}
+  {{ end }}
+
+  <!-- Plausible Analytics -->
+  {{ with .Site.Params.analytics.plausible }}
+    {{ if .enabled }}
+      <script defer data-domain="{{ .domain }}" src="{{ default "https://plausible.io/js/script.js" .scriptUrl }}"></script>
+    {{ end }}
+  {{ end }}
+
+  <!-- Umami Analytics -->
+  {{ with .Site.Params.analytics.umami }}
+    {{ if .enabled }}
+      <script defer src="{{ .scriptUrl }}" data-website-id="{{ .websiteId }}"></script>
+    {{ end }}
+  {{ end }}
+
+  <!-- Fathom Analytics -->
+  {{ with .Site.Params.analytics.fathom }}
+    {{ if .enabled }}
+      <script src="{{ .scriptUrl }}" data-site="{{ .siteId }}" defer></script>
+    {{ end }}
+  {{ end }}
+
+  <!-- Goatcounter Analytics -->
+  {{ with .Site.Params.analytics.goatcounter }}
+    {{ if .enabled }}
+      <script data-goatcounter="https://{{- .name -}}.goatcounter.com/count"
+              async src="https://gc.zgo.at/count.v3.js"
+              crossorigin="anonymous"
+              integrity="sha384-QGgNMMRFTi8ul5kHJ+vXysPe8gySvSA/Y3rpXZiRLzKPIw8CWY+a3ObKmQsyDr+a">
+      </script>    
+    {{ end }}
+  {{ end }}
+
+  <!-- Custom Analytics Scripts -->
+  {{ with .Site.Params.analytics.custom }}
+    {{ if .head }}
+      {{ range .head }}
+        {{ . | safeHTML }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+
+{{- end -}}

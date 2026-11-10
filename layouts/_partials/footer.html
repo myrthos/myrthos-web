@@ -1,0 +1,64 @@
+<footer class="pb-6 pt-10">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6">
+    <div class="footer-shell">
+      <div class="footer-inner">
+        <!-- Left -->
+        {{ with .Site.Menus.footer }}
+        <div class="footer-links">
+          {{ range . }}
+          <a
+            href="{{ .URL }}"
+            class="footer-link footer-float link-underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <i class="{{ .Params.icon }} text-[0.8rem]"></i>
+            <span>{{ .Name }}</span>
+          </a>
+          {{ end }}
+        </div>
+        {{ end }}
+
+        <!-- Right -->
+        {{ with .Site.Menus.social }}
+        <div class="footer-links">
+          {{ range . }}
+          <a
+            href="{{ .URL }}"
+            class="footer-link footer-float link-underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <i class="{{ .Params.icon }} text-[0.8rem]"></i>
+            <span>{{ .Name }}</span>
+          </a>
+          {{ end }}
+        </div>
+        {{ end }}
+      </div>
+    </div>
+
+    <div class="space-y-1">
+      <div class="footer-small">
+        {{ with .Site.Params.License }}
+          <span>{{- .Type }}&nbsp;</span>
+          {{ if .Link }}
+            <a
+              href="{{ .Link }}"
+              class="footer-link footer-float link-underline footer-small"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span>{{ .Title }}</span>
+          </a>
+          . 
+          {{ end }}
+        {{ end }}
+        {{ with .Site.Params.Copyright }}
+        <span>&copy; {{ with .first_year }}{{ . }} - {{ end }}{{ now.Format "2006" }} {{ with .owner }}{{ . }}.{{end}}</span>
+        {{ end }}
+      </div>
+      
+    </div>
+  </div>
+</footer>
