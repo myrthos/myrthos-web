@@ -62,8 +62,8 @@ enableEmoji = true
     source = "layouts"
     target = "layouts"
   [[module.mounts]]
-    source = "static"
-    target = "static"
+    source = "static/images"
+    target = "assets/images"
   [[module.mounts]]
     source = "netlify.toml"
     target = "assets/config/netlify.toml"

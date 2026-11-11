@@ -10,22 +10,13 @@
         <!-- Brand: logo or monogram, always links to root -->
         <a href="{{ "/" | relURL }}" class="flex items-center gap-2">
           {{ with .Site.Params.logo }}
-            {{/* Light logo */}}
-            <div data-theme-icon-dark class=" flex h-8 w-20 items-center justify-center overflow-hidden bg-surface">
-              <img
-                src="{{ .logo_light | relURL }}"
-                alt="{{ $brand }}"
-                class="h-full w-full object-cover"
-              >
-            </div>
-            {{/* Dark logo */}}
-            <div data-theme-icon-light class="flex h-8 w-20 items-center justify-center overflow-hidden bg-surface" style="display: none">
-              <img
-                src="{{ .logo_dark | relURL }}"
-                alt="{{ $brand }}"
-                class="h-full w-full object-cover"
-              >
-            </div>
+            {{ partial "assets/image.html" (dict 
+              "src" .logo 
+              "color" true
+              "title" $brand
+              "outerClass" "flex h-8 w-20 items-center justify-center overflow-hidden bg-surface"
+              "innerClass" "h-full w-full object-cover")
+            }}
           {{ else }}
             <div class="logo-badge">
               {{ $mono }}

@@ -1,0 +1,291 @@
+<!-- 
+    Cspell:ignore errorf exif figcaption nbsp warnf djlint horver webp
+
+    Render a local or remote image It allows for automatic selection of a dark and light image when the color mode is set.
+    The image is wrapped in a figure if a caption is provided, else the image is wrapped in a div. The partial supports 
+    the following arguments:
+    "src":          The source of the image. For a remote image the color mode is ignored
+    "crop":         Optional. If set, the image is cropped to match the ratio. Can be set to one of the following:
+                        1x1     Create a square image
+                        2x3     Portrait 3x2
+                        3x2     landscape 3x2
+                        3x4     Portrait 4x3
+                        4x3     Landscape 4x3
+                        9x16    Portrait 16x9
+                        16x9    Landscape 16x9
+                        9x21    Portrait 21x9
+                        21x9    Landscape 21x9
+    "anchor"        Optional and only valid when resize is set. Set the The focal point used when cropping the image. Can be:
+                        TopLeft, Top, TopRight, Left, Center, Right, BottomLeft, Bottom, BottomRight, or Smart
+                    Defaults to "Smart".
+    "page":         Optional .Page, which is used to load the image relative to the current page.
+    "color":        Optional flag indicating if the image should support color modes. Default is false.
+                    If true, the src name without extension will be used and "-dark" or "-light" will be appended,
+                    before loading the image. Example: src is img/image.jpg, then the actual images should be:
+                    img/image-dark.jpg and img/image-light.jpg
+    "outerClass":   Optional class attribute of the outer div/picture element.
+    "innerClass":   Optional class attribute of the inner img element.
+    "captionClass": Optional class attribute for the caption.
+    "title":        Optional alternate text of the image. see also "autoCaption".
+    "caption":      Optional figure caption displayed below the image.
+    "credits":      Optional figure credits text displayed below the image.
+    "autoCaption":  Optional flag, when "true" and "caption" is not set, it will derive the caption and credits from a file at 
+                    the same location as the image file, but with the extension ".txt" or if that does not exist, from the image 
+                    EXIF "ImageDescription" and "Artist" tags. Default is "false".
+                    If the condition is met and "caption"/credits is not set, it will also make the title equal to the caption.
+-->
+
+<!-- Copy and check the input parameters -->
+{{- $src := .src -}}
+
+{{ $crop := .crop -}}
+{{ $ratios := slice "1x1" "2x3" "3x2" "3x4" "4x3" "9x16" "16x9" "9x21" "21x9" }}
+{{ if $crop }}
+    {{ if not (in $ratios $crop) }}
+        {{ errorf "partial [assets/image.html] - Invalid value for param 'crop'" }}
+    {{ end }}
+{{ end }}
+
+{{- $anchor := .anchor -}}
+{{ $anchors := slice "TopLeft" "Top" "TopRight" "Left" "Center" "Right" "BottomLeft" "Bottom" "BottomRight" "Smart" }}
+{{ if $anchor }}
+    {{ if not (in $anchors $anchor) }}
+        {{ errorf "partial [assets/image.html] - Invalid value for param 'anchor'" }}
+    {{ end }}
+{{ else }}
+    {{ $anchor := "Smart" }}
+{{ end }}
+
+{{ $page := .page }}
+
+{{ $color := .color | default false }}
+{{ if ne (printf "%T" $color) "bool" }}
+    {{ errorf "partial [assets/image.html] - Invalid value for param 'color'" }}
+{{ end }}
+
+{{- $outerClass := .outerClass -}}
+{{- $innerClass := .innerClass -}}
+{{- $captionClass := .captionClass -}}
+{{- $title := .title -}}
+{{- $caption := .caption -}}
+{{- $credits := .credits -}}
+
+{{ $autoCaption := .autoCaption | default false }}
+{{ if ne (printf "%T" $autoCaption) "bool" }}
+    {{ errorf "partial [assets/image.html] - Invalid value for param 'autoCaption'" }}
+{{ end }}
+
+<!-- Two color modes are supported -->
+{{- $colors := slice "light" "dark" -}}
+
+
+<!-- Crop the image -->
+{{ define "_partials/inline/image-crop.html" }}
+    {{ $img := .img }}
+    {{ $ratio := .ratio }}
+    {{ $anchor := .anchor }}
+
+    <!-- Determine ratio -->
+    {{ $horver := strings.Split $ratio "x" }}
+    {{ $hor := float (index $horver 0) }}
+    {{ $ver := float (index $horver 1) }}
+    {{ $factorRatio := math.Div $hor $ver }}
+
+    <!-- Get current image ratio, height and width -->
+    {{ $width := float $img.Width }}
+    {{ $height := float $img.Height }}
+    {{ $factorImage := math.Div $width $height }}
+
+    {{ $newHeight := $height }}
+    {{ $newWidth := $width }}
+    {{ if gt $factorImage $factorRatio }}
+        {{ $newWidth = math.Floor (math.Div (math.Mul $height $hor) $ver) }}
+        {{ $newHeight = math.Floor $newHeight }}
+    {{ else }}
+        {{ $newWidth = math.Floor $newWidth }}
+        {{ $newHeight = math.Floor (math.Div (math.Mul $width $ver) $hor) }}
+    {{ end }}
+
+    <!-- Crop to new image -->
+    {{ $filter := printf "crop %dx%d %s webp q90" (int $newWidth) (int $newHeight) $anchor }}
+    {{ $newImg := images.Filter (images.Process $filter) $img }}
+
+    {{ return $newImg }}
+{{ end }}
+
+
+<!-- Separate the image in a dark and a light image when $color is set 
+     $src is the dark image and $src_light is the light image -->
+{{ $src_light := "" }}
+{{ if $color }}
+    {{ $src_dark := "" }}
+    {{- with $src -}}
+        <!-- Append dark or light to the image name -->
+        {{- $ext := path.Ext $src -}}
+        {{- $base := strings.TrimSuffix $ext $src -}}
+        {{ $src_light = printf "%s-light%s" $base $ext }}
+        {{ $src_dark = printf "%s-dark%s" $base $ext }}
+    {{ end }}
+    {{ $src = $src_dark }}
+{{ end }}
+
+<!-- Get the (dark) image -->
+{{ $img := "" }}
+{{ $remote := hasPrefix (lower $src) "http" }}
+{{ if $remote }}
+    {{ $img = resources.GetRemote $src -}}
+    <!-- Color mode is not supported for remote images -->
+    {{ $color = false }}
+{{ else }}    
+    {{ if $page }}
+        <!-- Image is relative to the page -->
+        {{ $img = $page.Resources.GetMatch $src }}
+    {{ end }}
+    {{ if not $img }}
+        <!-- Do we have a headless bundle? -->
+        {{ $headless := $page.GetPage "headless" }}
+        {{ if $headless }}
+            {{- $img = $headless.Resources.GetMatch $src -}}
+        {{ end }}
+    {{ end }}
+    {{ if not $img }}
+        <!-- Image is in static or assets -->
+        {{ $img = resources.GetMatch $src }}
+    {{ end }}
+{{ end }}
+
+<!-- Get the light image -->
+{{ $img_light := "" }}
+{{ if $color }}
+    {{ if $page }}
+        <!-- Image is relative to the page -->
+        {{ $img_light = $page.Resources.GetMatch $src_light }}
+    {{ end }}
+    {{ if not $img_light }}
+        <!-- Do we have a headless bundle? -->
+        {{ $headless := $page.GetPage "headless" }}
+        {{ if $headless }}
+            {{- $img_light = $headless.Resources.GetMatch $src_light -}}
+        {{ end }}
+    {{ end }}
+    {{ if not $img_light }}
+        <!-- Image is in static or assets -->
+        {{ $img_light = resources.GetMatch $src_light }}
+    {{ end }}
+{{ end }}
+
+<!-- Check image, and for a remote image, copy it to the correct location --> 
+{{ with $img }}
+    <!-- Make sure remote images do not end up in the root of the site -->
+    {{ if $remote }}
+        {{ $path := (urls.Parse $src).Path }}
+        {{ $filename := index (last 1 (split (delimit (split $path "/") "," "") ",")) 0 -}}
+        {{ $img = $img.Content | resources.FromString (printf "/img/%s" $filename) -}}
+    {{ end }}
+{{ else }}
+    {{ warnf "partial [assets/image.html] - Cannot find image resource: %q" $src -}}
+{{ end }}
+
+<!-- Prepare and show the image -->
+{{ if $img }}
+    <!-- Check if we need to derive the caption automatically from non-remote images -->
+    {{ if eq $autoCaption "true" }}
+        {{ if and (not $remote) (or (not $caption) (not $credits)) }}
+            <!-- Check for existence of a .txt file with the same name as the current image, or for a description in the EXIF -->
+            {{ $textPath := printf "%s/%s.txt" (path.Dir $img.RelPermalink) (path.BaseName $img.RelPermalink) -}}
+            {{ if os.FileExists $textPath }}
+                <!-- read the file -->
+                {{ $reading := split (os.ReadFile $textPath) "|" }}
+                {{ range $index, $value := $reading }}
+                    {{ if and (not $caption) (eq $index 0) }}
+                        {{ $caption = $value }}
+                    {{ end }}
+                    {{ if and (not $credits) (eq $index 1) }}
+                        {{ $credits = $value }}
+                    {{- end -}}
+                {{- end -}}
+            {{- end -}}
+        {{ end }}
+
+        <-- Process caption and credits from Exif information, if it does not yet exist -->
+        {{- with $img.Exif -}}
+            {{- if not $caption -}}
+                {{- $caption = .Tags.ImageDescription -}}
+            {{- end -}}
+            {{- if not $credits -}}
+                {{- $credits = strings.Title (lower .Tags.Artist) -}}
+            {{- end -}}
+        {{- end -}}
+
+        <-- Use the title as the cation, if it still has not been set -->
+        {{- if and $caption (not $title) }}
+            {{- $title = $caption -}}
+        {{- end -}}
+    {{- end -}}    
+
+    <!-- Crop the image if specified -->
+    {{ if $crop }}
+        {{ $img = partial "inline/image-crop.html" (dict "img" $img "ratio" $crop "anchor" $anchor) }}
+        {{ if $img_light }}
+            {{ $img_light = partial "inline/image-crop.html" (dict "img" $img_light "ratio" $crop "anchor" $anchor) }}
+        {{ end }}
+    {{ end }}
+
+    <!-- Show the image with optional caption and credits-->
+    {{- if or $caption $credits -}}
+        <!-- Use a figure tag to capture the cation and credits -->
+        <figure {{ with $outerClass }}class="{{ . }}"{{ end }}>
+    {{ end }}
+        {{ if $color }}
+            <!-- Show the light image -->
+            <div data-theme-icon-dark {{ if not (or $caption $credits) }}{{ with $outerClass }}class="{{- . -}}"{{ end }}{{ end }}>
+            <img
+                {{ with $img_light }}
+                src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}"
+                {{ end }}
+                alt="{{ $title }}"
+                {{ with $innerClass }}class="{{ . }}"{{ end }}
+            >
+            </div>
+            <!-- Show the dark image -->
+                <!-- djlint:off H021 -->
+            <div data-theme-icon-light {{ if not (or $caption $credits) }}{{ with $outerClass }}class="{{- . -}}"{{ end }}{{ end }} style="display: none">
+                <!-- djlint:on -->
+            <img
+                {{ with $img }}
+                src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}"
+                {{ end }}
+                alt="{{ $title }}"
+                {{ with $innerClass }}class="{{ . }}"{{ end }}
+            >
+            </div>
+        {{ else }}
+            <!-- Show the image -->
+            <div {{ if not (or $caption $credits) }}{{ with $outerClass }}class="{{- . -}}"{{ end }}{{ end }}>
+            <img
+                {{ with $img }}
+                src="{{ .RelPermalink }}" width="{{ .Width }}" height="{{ .Height }}"
+                {{ end }}
+                alt="{{ $title }}"
+                {{ with $innerClass }}class="{{ . }}"{{ end }}
+            >
+            </div>
+        {{ end }}
+
+        <!-- Show the caption and credits -->
+        {{ if or $caption $credits }}
+            <!-- Add camera to credits -->
+            {{ if $credits }}
+                    <!-- djlint:off H025 -->
+                {{ $icon := "<i class=\"fa-solid fa-camera\"></i>" }}
+                    <!-- djlint:on -->
+                {{ $credits = printf "%s&nbsp;%s" $icon $credits }}
+            {{ end }}
+            <!-- Place credits in brackets if there is both a caption and a credit -->
+            {{ if and $caption $credits }}
+                {{ $credits = printf "&nbsp;&nbsp;( %s)" $credits }}
+            {{ end }}
+            <figcaption class="figure-caption {{ $captionClass }}">{{ $caption | safeHTML }}{{ $credits | safeHTML }}</figcaption>
+        </figure>
+        {{ end }}
+{{ end }}

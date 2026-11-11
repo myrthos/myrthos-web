@@ -1,0 +1,88 @@
+<!-- 
+    Cspell:ignore errorf EXIF
+
+    Render a local or remote image It allows for automatic selection of a dark and light image when the color mode is set.
+    The image is wrapped in a figure if a caption is provided, else the image is wrapped in a div. The partial supports 
+    the following arguments:
+    "src":          The source of the image. For a remote image the color mode is ignored
+    "crop":         Optional. If set, the image is cropped to match the ratio. Can be set to one of the following:
+                        1x1     Create a square image
+                        2x3     Portrait 3x2
+                        3x2     landscape 3x2
+                        3x4     Portrait 4x3
+                        4x3     Landscape 4x3
+                        9x16    Portrait 16x9
+                        16x9    Landscape 16x9
+                        9x21    Portrait 21x9
+                        21x9    Landscape 21x9
+    "anchor"        Optional and only valid when resize is set. Set the The focal point used when cropping the image. Can be:
+                        TopLeft, Top, TopRight, Left, Center, Right, BottomLeft, Bottom, BottomRight, or Smart
+                    Defaults to "Smart".
+    "color":        Optional flag indicating if the image should support color modes. Default is false.
+                    If true, the src name without extension will be used and "-dark" or "-light" will be appended,
+                    before loading the image. Example: src is img/image.jpg, then the actual images should be:
+                    img/image-dark.jpg and img/image-light.jpg
+    "outerClass":   Optional class attribute of the outer div/picture element.
+    "innerClass":   Optional class attribute of the inner img element.
+    "captionClass": Optional class attribute for the caption.
+    "title":        Optional alternate text of the image. see also "autoCaption".
+    "caption":      Optional figure caption displayed below the image.
+    "credits":      Optional figure credits text displayed below the image.
+    "autoCaption":  Optional flag, when "true" and "caption" is not set, it will derive the caption and credits from a file at 
+                    the same location as the image file, but with the extension ".txt" or if that does not exist, from the image 
+                    EXIF "ImageDescription" and "Artist" tags. Default is "false".
+                    If the condition is met and "caption"/credits is not set, it will also make the title equal to the caption.
+-->
+
+<!-- Copy and check the input parameters -->
+{{- $src := .Get "src" | default "" -}}
+
+{{ $crop := .Get "crop" | default ""  -}}
+{{ $ratios := slice "1x1" "2x3" "3x2" "3x4" "4x3" "9x16" "16x9" "9x21" "21x9" }}
+{{ if $crop }}
+    {{ if not (in $ratios $crop) }}
+        {{ errorf "Shortcode [image.html] - Invalid value for param 'crop'" }}
+    {{ end }}
+{{ end }}
+
+{{- $anchor := .Get "anchor" | default "" -}}
+{{ $anchors := slice "TopLeft" "Top" "TopRight" "Left" "Center" "Right" "BottomLeft" "Bottom" "BottomRight" "Smart" }}
+{{ if $anchor }}
+    {{ if not (in $anchors $anchor) }}
+        {{ errorf "Shortcode [image.html] - Invalid value for param 'anchor'" }}
+    {{ end }}
+{{ else }}
+    {{ $anchor := "Smart" }}
+{{ end }}
+
+{{ $color := .Get "color" | default false }}
+{{ if ne (printf "%T" $color) "bool" }}
+    {{ errorf "Shortcode [image.html] - Invalid value for param 'color'" }}
+{{ end }}
+
+{{- $outerClass := .Get "outerClass" | default "" -}}
+{{- $innerClass := .Get "innerClass" | default "" -}}
+{{- $captionClass := .Get "captionClass" | default "" -}}
+{{- $title := .Get "title" | default "" -}}
+{{- $caption := .Get "caption" | default "" -}}
+{{- $credits := .Get "credits" | default "" -}}
+
+{{ $autoCaption := .Get "autoCaption" | default false }}
+{{ if ne (printf "%T" $autoCaption) "bool" }}
+    {{ errorf "partial Shortcode [image.html] - Invalid value for param 'autoCaption'" }}
+{{ end }}
+
+{{- partial "assets/image.html" (dict 
+    "src" $src
+    "crop" $crop
+    "anchor" $anchor
+    "page" .Page
+    "color" $color
+    "outerClass" $outerClass
+    "innerClass" $innerClass
+    "captionClass" $captionClass
+    "title" $title
+    "caption" $caption
+    "credits" $credits
+    "autoCaption" $autoCaption)
+-}} 

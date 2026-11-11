@@ -6,9 +6,8 @@ description = "Myrthos is a site creating blogs and projects about electronics, 
 
 # Site logo
 [logo]
-  logo_dark = "images/Logo_Rotated_Text50-dark.webp"
-  logo_light = "images/Logo_Rotated_Text50-light.webp"
   logo_brand = false  # if true, show brand name next to logo
+  logo = "images/Logo_Rotated_Text50.webp"
 
 [copyright]
   first_year = "2023"
@@ -24,9 +23,9 @@ description = "Myrthos is a site creating blogs and projects about electronics, 
   enable = false
 
 [search]
-  header = true     # show search in header
-  name = "Search"
-  icon = "fa-solid fa-magnifying-glass"
+  header = true                         # show search in header
+  name = "Search"                       # Search title
+  icon = "fa-solid fa-magnifying-glass" # Search icon
 
 # Project and blog intro text
 projectsIntro = "Selected projects to display list." # Can be empty
