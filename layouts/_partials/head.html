@@ -8,27 +8,34 @@
 {{ partial "meta.html" . }}
 
 <!-- Favicon -->
-{{ with .Site.Params.favicon }}
-  <link rel="icon" type="image/x-icon" href="{{ . | relURL }}" />
-{{ else }}
-  <!-- Default favicon paths -->
-  {{ if fileExists "static/favicon.ico" }}
-    <link rel="icon" type="image/x-icon" href="{{ "favicon.ico" | relURL }}" />
-  {{ end }}
-  {{ if fileExists "static/favicon.png" }}
-    <link rel="icon" type="image/png" href="{{ "favicon.png" | relURL }}" />
-  {{ end }}
-  {{ if fileExists "static/favicon.svg" }}
-    <link rel="icon" type="image/svg+xml" href="{{ "favicon.svg" | relURL }}" />
-  {{ end }}
-{{ end }}
-
-<!-- Apple Touch Icon -->
-{{ if .Site.Params.appleTouchIcon }}
-  <link rel="apple-touch-icon" href="{{ . | relURL }}" />
-{{ else if fileExists "static/apple-touch-icon.png" }}
-  <link rel="apple-touch-icon" href="{{ "apple-touch-icon.png" | relURL }}" />
-{{ end }}
+{{ if .Site.Params.favicon.logo -}}
+    {{ $favicon := resources.Get .Site.Params.favicon.logo -}}
+    <link rel="icon" type="image/png" sizes="{{.Site.Params.favicon.logoSize}}x{{.Site.Params.favicon.logoSize}}" href="{{ $favicon.Permalink }}">
+    {{ range $i := .Site.Params.favicon.logoSizes -}} 
+        {{ $image := $favicon.Resize (printf "%dx%d CatmullRom" $i $i) -}}
+        <link rel="icon" type="image/png" sizes="{{$i}}x{{$i}}" href="{{ $image.Permalink }}">
+    {{ end -}} 
+{{ end -}}
+{{ if .Site.Params.favicon.LogoApple -}}
+    {{ $favicon := resources.Get .Site.Params.favicon.LogoApple -}}
+    <link rel="apple-touch-icon" type="image/png" sizes="{{.Site.Params.favicon.logoAppleSize}}x{{.Site.Params.favicon.logoAppleSize}}" href="{{ $favicon.Permalink }}">
+    {{ range $i := .Site.Params.favicon.logoAppleSizes -}} 
+        {{ $image := $favicon.Resize (printf "%dx%d CatmullRom" $i $i) -}}
+        <link rel="apple-touch-icon" type="image/png" sizes="{{$i}}x{{$i}}" href="{{ $image.Permalink }}">
+    {{ end -}} 
+{{ end -}}
+{{ if .Site.Params.favicon.LogoAndroid -}}
+    {{ $favicon := resources.Get .Site.Params.favicon.LogoAndroid -}}
+    <link rel="icon" type="image/png" sizes="{{.Site.Params.favicon.logoAndroidSize}}x{{.Site.Params.favicon.logoAndroidSize}}" href="{{ $favicon.Permalink }}">
+    {{ range $i := .Site.Params.favicon.logoAndroidSizes -}} 
+        {{ $image := $favicon.Resize (printf "%dx%d CatmullRom" $i $i) -}}
+        <link rel="icon" type="image/png" sizes="{{$i}}x{{$i}}" href="{{ $image.Permalink }}">
+    {{ end -}} 
+{{ end -}}
+{{ if .Site.Params.favicon.maskIcon -}}
+    {{ $favicon := resources.Get .Site.Params.favicon.maskIcon -}}
+    <link rel="mask-icon" href="{{ $favicon.Permalink }}" color="#5bbad5">
+{{ end -}}
 
 <!-- Web App Manifest -->
 {{ with .Site.GetPage "/" }}

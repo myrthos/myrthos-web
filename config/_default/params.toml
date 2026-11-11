@@ -31,24 +31,23 @@ description = "Myrthos is a site creating blogs and projects about electronics, 
 projectsIntro = "Selected projects to display list." # Can be empty
 blogIntro = "" # Can be empty
 
-# Favicon - Place your favicon files in /static/ directory
-# Supported formats: .ico, .png, .svg
-favicon = "icons/favicon-96x96.png"
-appleTouchIcon = "apple-touch-icon.png"
+[favicon]
+  logo = "images/favicon/favicon.png"
+  logoSize = 96
+  logoSizes = [48, 32, 16]
+  LogoApple = "images/favicon/apple-touch-icon.png"
+  logoAppleSize = 180
+  logoAppleSizes = [152, 120, 76, 60]
+  LogoAndroid = "images/favicon/android-chrome.png"
+  logoAndroidSize = 256
+  logoAndroidSizes = [192]
+  maskIcon = "images/favicon/safari-pinned-tab.svg"
 
 # Web App Manifest Configuration (PWA support)
 [manifest]
   themeColor = "#a855f7"
   backgroundColor = "#000000"
   categories = ["blog", "portfolio", "developer"]
-
-  # Custom icon configuration (optional)
-  # If not specified, defaults to /icons/android-chrome-*.png
-  # [[manifest.icons]]
-  #   src = "/icons/android-chrome-192x192.png"
-  #   sizes = "192x192"
-  #   type = "image/png"
-  #   purpose = "any maskable"
 
 # Theme configuration
 defaultTheme = "light"  # Options: "light", "dark", "system"
