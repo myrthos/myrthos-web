@@ -33,8 +33,10 @@
     "start:future": "hugo server --bind=0.0.0.0 --disableFastRender --printI18nWarnings --printMemoryUsage -F",
     "start:all": "hugo server --bind=0.0.0.0 --disableFastRender --printI18nWarnings --printMemoryUsage -D -E -F",
     "start:example": "hugo server --bind=0.0.0.0 --disableFastRender --printI18nWarnings -s themes/hugo-minimal-black/exampleSite",
+    "start:css": "npm run -s css && npm run -s start",
+    "css": "tailwindcss -i ./assets/css/main.css -o ./static/css/main.css",
     "debug": "hugo server --bind=0.0.0.0 --disableFastRender --printI18nWarnings -printMemoryUsage --templateMetrics --templateMetricsHints --logLevel debug",
-    "build": "hugo --gc --minify",
+    "release": "hugo --gc --minify",
     "clean": "rimraf public",
     "lint": "npm-run-all2 lint:**",
     "lint:scripts": "eslint assets/js --no-error-on-unmatched-pattern",
@@ -52,13 +54,17 @@
   "type": "commonjs",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@tailwindcss/typography": "^0.5.20",
+    "autoprefixer": "^10.6.2",
     "eslint": "^10.14.0",
     "globals": "^17.14.0",
     "markdownlint": "^0.42.1",
     "markdownlint-cli2": "^0.24.0",
     "npm-run-all2": "^9.0.4",
+    "postcss": "^8.5.32",
     "rimraf": "^6.1.4",
     "stylelint": "^18.0.0",
-    "stylelint-config-standard": "^41.0.0"
+    "stylelint-config-standard": "^41.0.0",
+    "tailwindcss": "^3.4.19"
   }
 }

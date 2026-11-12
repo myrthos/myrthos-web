@@ -24,7 +24,7 @@ mv hugo.toml config/_default
 
 To use this site make sure [Hugo extended](https://github.com/goHugoio/Hugo/releases) is installed.
 
-For development, node modules are used. These are not required, they only make development easier, like running npm scripts and linters. To use this, make sure [node.js](https://nodejs.org) with [npm](https://www.npmjs.com/) are installed.
+For development, node modules are used. These are not required to run the site, they only make development easier, like running npm scripts and linters, and to process modifications to CSS. To use this, make sure [node.js](https://nodejs.org) with [npm](https://www.npmjs.com/) and npx are installed.
 
 The node_modules are not part of the repository. To install the node modules, execute the below.
 
@@ -50,6 +50,9 @@ npm init @eslint/config@latest
 
 # Rimraf: rm -rf in a node implementation
 npm install rimraf --save-dev
+
+# Tailwind CSS and postcss
+npm install tailwindcss@3 postcss autoprefixer @tailwindcss/typography --save-dev
 ```
 
-The required node modules need to be installed. The optional modules are needed to use the scripts in `package.json`.
+These modules are needed to run the scripts in `package.json`.
