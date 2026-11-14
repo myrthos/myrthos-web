@@ -1,16 +1,23 @@
-+++
-title = "Complete Guide to Minimal Black Theme"
-date = "2025-01-15"
-author = "Jim Christopoulos"
-tags = ["hugo", "tutorial", "guide", "theme"]
-categories = ["documentation"]
-description = "A comprehensive guide to all features and capabilities of the Minimal Black Hugo theme"
-draft = false
-+++
+---
+title: "Complete Guide to Minimal Black Theme"
+date: "2025-01-15"
+lastmod: "2026-11-10"
+author: "Jim Christopoulos"
+tags: ["hugo", "tutorial", "guide", "theme"]
+categories: ["documentation"]
+description: "A comprehensive guide to all features and capabilities of the Minimal Black Hugo theme"
+draft: false
+pageimage:
+    url: /images/construction.jpg
+    author: Mick Haupt
+    authorURL: https://unsplash.com/@rocinante_11
+    source: Unsplash
+    sourceURL: https://unsplash.com/photos/VbI0LMaGMlg
+---
 
 Welcome to the complete guide for the Minimal Black Hugo theme! 
 
-{{< image src="images/construction.jpg" crop="16x9" anchor="Smart" title="construction" >}}
+{{< image src="images/construction.jpg" crop="21x9" anchor="Smart" captionClass="figcaption" caption="Some length text goes here, just to see how it wraps when it fills the line and I am using short words" credits="Someone" title="construction" >}}
 
 This post demonstrates all the features, components, and customization options available in the theme.
 

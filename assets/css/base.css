@@ -33,3 +33,12 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
 }
+
+.align-right {
+  text-align: right;
+}
+
+.nobreak {
+  white-space: nowrap; /* Prevents line breaks */
+  display: inline-block; /* Allows for block-like behavior */
+}

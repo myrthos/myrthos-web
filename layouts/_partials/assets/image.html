@@ -207,7 +207,7 @@
             {{- end -}}
         {{ end }}
 
-        <-- Process caption and credits from Exif information, if it does not yet exist -->
+        <!-- Process caption and credits from Exif information, if it does not yet exist -->
         {{- with $img.Exif -}}
             {{- if not $caption -}}
                 {{- $caption = .Tags.ImageDescription -}}
@@ -217,7 +217,7 @@
             {{- end -}}
         {{- end -}}
 
-        <-- Use the title as the cation, if it still has not been set -->
+        <!-- Use the title as the cation, if it still has not been set -->
         {{- if and $caption (not $title) }}
             {{- $title = $caption -}}
         {{- end -}}
@@ -274,18 +274,21 @@
 
         <!-- Show the caption and credits -->
         {{ if or $caption $credits }}
+            <!-- Place credits in brackets if there is both a caption and a credit -->
+            {{ $left := "" }}
+            {{ $right := "" }}
+            {{ if and $caption $credits }}
+                {{ $left = "&nbsp;&nbsp;(" }}
+                {{ $right = ")" }}
+            {{ end }}
             <!-- Add camera to credits -->
             {{ if $credits }}
                     <!-- djlint:off H025 -->
                 {{ $icon := "<i class=\"fa-solid fa-camera\"></i>" }}
                     <!-- djlint:on -->
-                {{ $credits = printf "%s&nbsp;%s" $icon $credits }}
+                {{ $credits = printf "<span class=\"nobreak\">%s%s&nbsp;%s%s</span>" $left $icon $credits $right }}
             {{ end }}
-            <!-- Place credits in brackets if there is both a caption and a credit -->
-            {{ if and $caption $credits }}
-                {{ $credits = printf "&nbsp;&nbsp;( %s)" $credits }}
-            {{ end }}
-            <figcaption class="figure-caption {{ $captionClass }}">{{ $caption | safeHTML }}{{ $credits | safeHTML }}</figcaption>
-        </figure>
+            <figcaption {{ with $captionClass }}class="{{ . }}"{{ end }}>{{ $caption | safeHTML }}{{ $credits | safeHTML }}</figcaption>
+        </figure> 
         {{ end }}
 {{ end }}

@@ -698,10 +698,6 @@ video {
   min-height: 100vh;
 }
 
-.w-20 {
-  width: 5rem;
-}
-
 .w-4 {
   width: 1rem;
 }
@@ -934,6 +930,17 @@ html[data-theme="dark"] {
 body {
   background: var(--color-bg);
   color: var(--color-text);
+}
+
+.align-right {
+  text-align: right;
+}
+
+.nobreak {
+  white-space: nowrap;
+  /* Prevents line breaks */
+  display: inline-block;
+  /* Allows for block-like behavior */
 }
 
 /* Utility Classes */
@@ -2214,7 +2221,7 @@ html[data-theme="dark"] .theme-toggle {
 .markdown-body a {
   color: var(--color-accent);
   text-decoration: none;
-  border-bottom: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);
+  /*border-bottom: 1px solid color-mix(in srgb, var(--color-accent) 35%, transparent);*/
   padding-bottom: 0.05rem;
   transition: color 0.15s ease-out, border-color 0.15s ease-out;
   word-wrap: break-word;
@@ -2892,7 +2899,7 @@ html[data-theme="light"] .markdown-body pre {
   display: block;
   max-width: 100%;
   height: auto;
-  margin: 1.5rem auto;
+  margin-top: 1.5rem;
   border-radius: 0.75rem;
   border: 1px solid color-mix(in srgb, var(--color-border) 60%, transparent);
 }
@@ -2903,8 +2910,10 @@ html[data-theme="light"] .markdown-body pre {
 }
 
 .markdown-body figcaption {
-  margin-top: 0.5rem;
-  font-size: 0.85rem;
+  margin-top: 0rem;
+  font-size: 0.9rem;
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
   color: var(--color-text-muted);
   font-style: italic;
 }
@@ -3830,7 +3839,7 @@ html[data-theme="light"] .mb-codeblock-content {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   backdrop-filter: blur(10px);
   transition: all 0.2s ease-out;
-  max-height: calc(100vh - 24rem);
+  max-height: calc(100vh - 5rem);
   overflow: hidden;
   display: flex;
   flex-direction: column;
