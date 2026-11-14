@@ -35,8 +35,9 @@
     "start:example": "hugo server --bind=0.0.0.0 --disableFastRender --printI18nWarnings -s themes/hugo-minimal-black/exampleSite",
     "start:css": "npm run -s css && npm run -s start",
     "css": "tailwindcss -i ./assets/css/main.css -o ./static/css/main.css",
+    "css:release": "tailwindcss -i ./assets/css/main.css -o ./static/css/main.css --minify",
     "debug": "hugo server --bind=0.0.0.0 --disableFastRender --printI18nWarnings -printMemoryUsage --templateMetrics --templateMetricsHints --logLevel debug",
-    "release": "hugo --gc --minify",
+    "release": "npm run -s css:release && hugo --gc --minify",
     "clean": "rimraf public",
     "lint": "npm-run-all2 lint:**",
     "lint:scripts": "eslint assets/js --no-error-on-unmatched-pattern",
@@ -66,5 +67,8 @@
     "stylelint": "^18.0.0",
     "stylelint-config-standard": "^41.0.0",
     "tailwindcss": "^3.4.19"
-  }
+  },
+  "browserslist": [
+    "baseline widely available with downstream"
+  ]
 }
